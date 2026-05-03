@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXELANDIAS | Ecossistema Cinematográfico Unificado</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Config para Cores Customizadas -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-dark': '#070714',
+                        'bg-card': 'rgba(20, 20, 40, 0.6)',
+                        'neon-pink': '#FF007F',
+                        'neon-purple': '#7000FF',
+                        'neon-cyan': '#00F0FF',
+                    },
+                    fontFamily: {
+                        'scifi': ['Orbitron', 'sans-serif'],
+                        'body': ['Rajdhani', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'hero-pattern': 'linear-gradient(to bottom, rgba(7,7,20,0.3), rgba(7,7,20,1))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom CSS para Efeitos e Animações */
+        body {
+            background-color: #070714;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(20, 20, 45, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .text-glow-pink {
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5), 0 0 20px rgba(255, 0, 127, 0.3);
+        }
+
+        .btn-neon {
+            background: linear-gradient(90deg, #7000FF, #FF007F);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5), 0 0 30px rgba(112, 0, 255, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, #FF007F, #7000FF);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .btn-neon:hover::before {
+            opacity: 1;
+        }
+
+        .btn-neon:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.7), 0 0 50px rgba(112, 0, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Animações Flutuantes */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-delayed {
+            animation: float 7s ease-in-out infinite 2s;
+        }
+
+        /* Partículas Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .card-hover:hover {
+            border-color: #FF007F;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+            background: #070714;
+        }
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.1rem;
+            background: linear-gradient(45deg, #7000FF, #FF007F, #00F0FF);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gradient-border:hover::before {
+            opacity: 1;
+        }
+
+        /* Imagens da Galeria */
+        .gallery-img {
+            transition: all 0.5s ease;
+            filter: grayscale(20%) brightness(0.8);
+        }
+        .gallery-item:hover .gallery-img {
+            filter: grayscale(0%) brightness(1.1);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="font-body text-gray-200 antialiased selection:bg-neon-pink selection:text-white">
+
+    <!-- Container de Partículas -->
+    <canvas id="particles-js"></canvas>
+
+    <!-- Header / Navbar -->
+    <nav class="fixed w-full z-50 glass border-b border-white/10 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-cube text-neon-cyan text-2xl md:text-3xl text-glow"></i>
+                    <span class="font-scifi font-bold text-xl md:text-2xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan to-neon-purple flex items-center gap-2">
+                        PIXELANDIAS
+                    </span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#comofunciona" class="text-gray-300 hover:text-neon-cyan transition font-semibold">O App</a>
+                    <a href="#beneficios" class="text-gray-300 hover:text-neon-pink transition font-semibold">Benefícios</a>
+                    <a href="#demo" class="text-gray-300 hover:text-neon-cyan transition font-semibold">Galeria</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="https://pay.herospark.com/pixelandias-sua-fabrica-de-renders-3d-e-pixelarts-acesso-mensal-520338" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-block btn-neon font-scifi font-bold py-2 px-6 rounded-full text-white tracking-wide text-sm">
+                        CRIAR AGORA
+                    </a>
+                    <!-- Botão Menu Mobile -->
+                    <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white text-2xl focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="md:hidden absolute top-20 left-0 w-full bg-bg-dark/95 backdrop-blur-lg border-b border-white/10 flex-col items-center py-6 space-y-6 hidden shadow-2xl">
+            <a href="#comofunciona" class="text-gray-300 hover:text-neon-cyan transition font-semibold text-lg mobile-link">O App</a>
+            <a href="#beneficios" class="text-gray-300 hover:text-neon-pink transition font-semibold text-lg mobile-link">Benefícios</a>
+            <a href="#demo" class="text-gray-300 hover:text-neon-cyan transition font-semibold text-lg mobile-link">Galeria</a>
+            <a href="https://pay.herospark.com/pixelandias-sua-fabrica-de-renders-3d-e-pixelarts-acesso-mensal-520338" target="_blank" rel="noopener noreferrer" class="btn-neon font-scifi font-bold py-3 px-8 rounded-full text-white tracking-wide text-sm mobile-link">
+                CRIAR AGORA
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center min-h-screen">
+        <!-- Background Glows -->
+        <div class="absolute top-1/4 left-0 w-96 h-96 bg-neon-purple/20 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-neon-pink/20 rounded-full blur-[150px]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan mb-6 font-semibold text-sm md:text-base">
+                        <i class="fa-solid fa-cube"></i> Ecossistema Cinematográfico 3D Unificado
+                    </div>
+                    <h1 class="font-scifi text-4xl sm:text-5xl lg:text-7xl font-black leading-tight mb-6">
+                        CRIE UNIVERSOS <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon-pink via-neon-purple to-neon-cyan text-glow-pink">
+                            3D E ANIME
+                        </span> <br>
+                        SEM ESFORÇO.
+                    </h1>
+                    <p class="text-lg md:text-xl lg:text-2xl text-gray-300 mb-10 font-light max-w-2xl mx-auto lg:mx-0">
+                        O app definitivo para criar cenas complexas e personagens consistentes. <strong>Com ferramentas profissionais de câmera, iluminação e in-painting.</strong>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full px-4 sm:px-0">
+                        <a href="https://pay.herospark.com/pixelandias-sua-fabrica-de-renders-3d-e-pixelarts-acesso-mensal-520338" target="_blank" rel="noopener noreferrer" class="btn-neon font-scifi font-bold py-4 px-6 md:px-10 rounded-full text-white text-base md:text-lg tracking-wider text-center flex items-center justify-center gap-3 w-full sm:w-auto">
+                            <i class="fa-solid fa-rocket"></i> COMEÇAR A CRIAR AGORA
+                        </a>
+                        <a href="#demo" class="glass font-scifi font-bold py-4 px-6 md:px-8 rounded-full text-white text-base md:text-lg hover:bg-white/10 transition text-center flex items-center justify-center gap-2 w-full sm:w-auto">
+                            <i class="fa-solid fa-play"></i> VER EXEMPLOS
+                        </a>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-center lg:justify-start">
+                        <a href="https://instagram.com/pixelandias" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-3 bg-white/5 border border-white/10 hover:border-neon-pink/50 rounded-full pr-6 pl-2 py-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,0,127,0.3)]">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 flex items-center justify-center text-white shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-brands fa-instagram text-xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mb-0.5">Acompanhe as novidades</p>
+                                <p class="text-sm font-bold text-white group-hover:text-neon-pink transition-colors">Siga <span class="font-scifi tracking-wider">@PIXELANDIAS</span></p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Visual (Floating App Mockup/Graphic) -->
+                <div class="relative hidden lg:block h-[600px] w-full perspective-1000">
+                    <!-- Main floating card -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[500px] gradient-border rounded-2xl p-2 floating z-20">
+                        <div class="w-full h-full bg-bg-dark rounded-xl overflow-hidden relative shadow-2xl">
+                            <!-- Placeholder Image representing a high quality 3D render -->
+                            <img src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cyberpunk Character" class="w-full h-full object-cover opacity-80 mix-blend-screen">
+                            
+                            <!-- App UI Overlay -->
+                            <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent">
+                                <div class="glass p-3 rounded-lg border border-white/20 flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs text-neon-cyan font-scifi">Prompt Ativo</p>
+                                        <p class="text-sm font-semibold text-white truncate w-48">Guerreiro Cyberpunk em Tóquio...</p>
+                                    </div>
+                                    <div class="h-8 w-8 rounded-full bg-neon-pink flex items-center justify-center animate-pulse">
+                                        <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative floating elements -->
+                    <div class="absolute top-20 right-10 w-32 h-32 glass rounded-xl floating-delayed z-30 p-2 flex items-center justify-center border border-neon-cyan/50">
+                        <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" class="rounded-lg w-full h-full object-cover" alt="Anime Style">
+                    </div>
+                    <div class="absolute bottom-32 left-0 w-40 h-24 glass rounded-xl floating z-10 p-3 flex flex-col justify-center border border-neon-pink/50">
+                        <p class="text-xs text-gray-400 mb-1 font-scifi">Renderização 3D</p>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-neon-purple to-neon-pink h-2 rounded-full w-full relative"></div>
+                        </div>
+                        <p class="text-right text-xs mt-1 text-neon-pink font-bold">100% Concluído</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section class="py-24 bg-black/50 border-y border-white/5 relative z-10" id="problema">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="font-scifi text-3xl md:text-5xl font-bold mb-6">Criar arte digital costumava ser <span class="text-red-500">um pesadelo.</span></h2>
+                <p class="text-xl text-gray-400">Ter ideias incríveis e não conseguir tirá-las da cabeça por falta de habilidade técnica é frustrante. Nós sabemos.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass p-8 rounded-2xl border border-red-500/20 hover:border-red-500/50 transition">
+                    <div class="w-14 h-14 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 text-red-500 text-2xl">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-scifi mb-3">Softwares Complexos</h3>
+                    <p class="text-gray-400">Programas de modelagem 3D exigem meses de estudo apenas para fazer o básico. A curva de aprendizado é brutal.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass p-8 rounded-2xl border border-red-500/20 hover:border-red-500/50 transition">
+                    <div class="w-14 h-14 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 text-red-500 text-2xl">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-scifi mb-3">Hardware Caro</h3>
+                    <p class="text-gray-400">Renderizar cenas 3D ou gráficos pesados exige computadores caríssimos. Seu PC trava só de abrir o programa.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass p-8 rounded-2xl border border-red-500/20 hover:border-red-500/50 transition">
+                    <div class="w-14 h-14 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 text-red-500 text-2xl">
+                        <i class="fa-solid fa-hourglass-end"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-scifi mb-3">Horas Perdidas</h3>
+                    <p class="text-gray-400">Modelar, texturizar, iluminar... Dias de trabalho para gerar uma única imagem que muitas vezes não fica como você imaginou.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTION & BENEFITS SECTION -->
+    <section class="py-24 relative overflow-hidden" id="beneficios">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjA1KSIvPjwvc3ZnPg==')] z-0"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl bg-neon-purple/10 rounded-full blur-[150px] z-0 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto mb-20">
+                <div class="inline-block bg-gradient-to-r from-neon-purple to-neon-pink p-[1px] rounded-full mb-6">
+                    <div class="bg-bg-dark px-6 py-2 rounded-full font-scifi text-neon-pink font-bold tracking-widest text-sm uppercase">
+                        Recursos Profissionais
+                    </div>
+                </div>
+                <h2 class="font-scifi text-4xl md:text-6xl font-bold mb-6">
+                    O poder do <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple">Pixelandias</span>
+                </h2>
+                <p class="text-2xl text-gray-300 font-light">
+                    Dois módulos robustos integrados para oferecer controle absoluto sobre sua arte, desde cenas complexas até design de vestuário.
+                </p>
+            </div>
+
+            <!-- Benefits Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Benefício 1 -->
+                <div class="glass p-8 rounded-2xl card-hover cursor-default group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-neon-pink/10 rounded-bl-full -z-10 transition-transform group-hover:scale-150"></div>
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-pink to-neon-purple rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-[0_0_15px_rgba(255,0,127,0.5)]">
+                        <i class="fa-solid fa-users-rays"></i>
+                    </div>
+                    <h3 class="font-scifi text-xl font-bold mb-3">Cena Multi-Personagem</h3>
+                    <p class="text-gray-400">Gerencie múltiplos personagens. Use imagens de fundo como base, aplique <strong>Poses Cinematográficas</strong> para precisão anatômica e controle interações físicas.</p>
+                </div>
+
+                <!-- Benefício 2 -->
+                <div class="glass p-8 rounded-2xl card-hover cursor-default group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-neon-cyan/10 rounded-bl-full -z-10 transition-transform group-hover:scale-150"></div>
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-cyan to-blue-600 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-[0_0_15px_rgba(0,240,255,0.5)]">
+                        <i class="fa-solid fa-camera-retro"></i>
+                    </div>
+                    <h3 class="font-scifi text-xl font-bold mb-3">Direção de Fotografia</h3>
+                    <p class="text-gray-400">Controle total com lentes Fisheye, Macro ou Anamórficas. Use o exclusivo <strong>Modo Selfie</strong>, defina horários e ajuste iluminação volumétrica.</p>
+                </div>
+
+                <!-- Benefício 3 -->
+                <div class="glass p-8 rounded-2xl card-hover cursor-default group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-150"></div>
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-600 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                        <i class="fa-solid fa-shirt"></i>
+                    </div>
+                    <h3 class="font-scifi text-xl font-bold mb-3">Estúdio Solo & Vestuário</h3>
+                    <p class="text-gray-400"><strong>Identidade Preservada</strong> de Roupas, Personagens, Manequim de Vestuário e Modo Sprite para frente e costas.</p>
+                </div>
+
+                <!-- Benefício 4 -->
+                <div class="glass p-8 rounded-2xl card-hover cursor-default group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-150"></div>
+                    <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="font-scifi text-xl font-bold mb-3">Fluxo Inteligente</h3>
+                    <p class="text-gray-400">Correção Inteligente (In-painting) por texto, importação e exportação de <strong>Saves</strong>, Mapeamento facial polido.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMO FUNCIONA (STEPS) -->
+    <section class="py-24 bg-black/30 border-t border-white/5" id="comofunciona">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-scifi text-4xl font-bold mb-4">Direções Artísticas Globais</h2>
+                <p class="text-xl text-gray-400">Três estilos fundamentais que alteram toda a lógica de renderização do motor.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center relative">
+                <!-- Linha conectora -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-800 -z-10 transform -translate-y-1/2 rounded-full">
+                    <div class="h-full bg-gradient-to-r from-neon-purple to-neon-pink w-full"></div>
+                </div>
+
+                <!-- Passo 1 -->
+                <div class="flex flex-col items-center text-center max-w-xs mb-10 md:mb-0 relative z-10 bg-[#070714] p-4 rounded-xl">
+                    <div class="w-20 h-20 rounded-full bg-bg-dark border-4 border-neon-purple flex items-center justify-center text-3xl font-scifi font-bold text-neon-purple mb-6 shadow-[0_0_20px_rgba(112,0,255,0.4)]">
+                        <i class="fa-solid fa-vr-cardboard"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-scifi mb-2">3D Unreal 5</h3>
+                    <p class="text-gray-400">Hiper-realismo fotográfico, renderização física baseada em luz e iluminação volumétrica densa.</p>
+                </div>
+
+                <!-- Passo 2 -->
+                <div class="flex flex-col items-center text-center max-w-xs mb-10 md:mb-0 relative z-10 bg-[#070714] p-4 rounded-xl">
+                    <div class="w-20 h-20 rounded-full bg-bg-dark border-4 border-neon-pink flex items-center justify-center text-3xl font-scifi font-bold text-neon-pink mb-6 shadow-[0_0_20px_rgba(255,0,127,0.4)]">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-scifi mb-2">Pixelart Anime</h3>
+                    <p class="text-gray-400">Estética nostálgica de 64-bit inspirada na era de ouro dos JRPGs e animes clássicos.</p>
+                </div>
+
+                <!-- Passo 3 -->
+                <div class="flex flex-col items-center text-center max-w-xs relative z-10 bg-[#070714] p-4 rounded-xl">
+                    <div class="w-20 h-20 rounded-full bg-bg-dark border-4 border-neon-cyan flex items-center justify-center text-3xl font-scifi font-bold text-neon-cyan mb-6 shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                        <i class="fa-solid fa-paintbrush"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-scifi mb-2">3D Estilizado</h3>
+                    <p class="text-gray-400">Visual semi-realista com acabamento pictórico impressionante (estilo Overwatch / Arcane).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEMONSTRAÇÃO / GALERIA -->
+    <section class="py-24 relative" id="demo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-scifi text-4xl md:text-5xl font-bold mb-4">Galeria da Comunidade</h2>
+                <p class="text-xl text-gray-400">Artes criadas com a nossa ferramenta Pixelandias.</p>
+            </div>
+
+            <!-- Grid de Imagens -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="gallery-item relative rounded-2xl overflow-hidden group cursor-pointer border border-white/10 glass">
+                    <div class="aspect-w-4 aspect-h-5 w-full h-[300px]">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cyberpunk City" class="gallery-img w-full h-full object-cover">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition duration-300">
+                        <span class="text-xs font-bold text-neon-cyan px-2 py-1 bg-neon-cyan/20 rounded">Estilo: Jogo Cyberpunk</span>
+                        <p class="mt-2 text-sm">"Cidade futurista chuvosa com neons..."</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item relative rounded-2xl overflow-hidden group cursor-pointer border border-white/10 glass">
+                    <div class="aspect-w-4 aspect-h-5 w-full h-[300px]">
+                        <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Anime Style" class="gallery-img w-full h-full object-cover">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition duration-300">
+                        <span class="text-xs font-bold text-neon-pink px-2 py-1 bg-neon-pink/20 rounded">Estilo: Anime Studio</span>
+                        <p class="mt-2 text-sm">"Menina com capuz em beco de tokyo..."</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item relative rounded-2xl overflow-hidden group cursor-pointer border border-white/10 glass">
+                    <div class="aspect-w-4 aspect-h-5 w-full h-[300px]">
+                        <img src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="3D Render" class="gallery-img w-full h-full object-cover">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition duration-300">
+                        <span class="text-xs font-bold text-neon-purple px-2 py-1 bg-neon-purple/20 rounded">Estilo: 3D Realista</span>
+                        <p class="mt-2 text-sm">"Mascote robô fofo com iluminação de estúdio..."</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item relative rounded-2xl overflow-hidden group cursor-pointer border border-white/10 glass hidden lg:block">
+                    <div class="aspect-w-4 aspect-h-5 w-full h-[300px]">
+                        <img src="https://images.unsplash.com/photo-1634838442385-236b2b4dbbc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fantasy Game" class="gallery-img w-full h-full object-cover">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition duration-300">
+                        <span class="text-xs font-bold text-orange-500 px-2 py-1 bg-orange-500/20 rounded">Estilo: RPG Fantasia</span>
+                        <p class="mt-2 text-sm">"Espada mágica brilhante em pedestal de pedra..."</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item relative rounded-2xl overflow-hidden group cursor-pointer border border-white/10 glass hidden lg:block">
+                    <div class="aspect-w-4 aspect-h-5 w-full h-[300px]">
+                        <img src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Space SciFi" class="gallery-img w-full h-full object-cover">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition duration-300">
+                        <span class="text-xs font-bold text-blue-500 px-2 py-1 bg-blue-500/20 rounded">Estilo: Sci-Fi Space</span>
+                        <p class="mt-2 text-sm">"Nave espacial cruzando nebulosa roxa..."</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item relative rounded-2xl overflow-hidden group cursor-pointer border border-white/10 glass hidden lg:block flex items-center justify-center bg-gradient-to-br from-bg-dark to-gray-900">
+                    <div class="text-center p-6">
+                        <i class="fa-solid fa-plus-circle text-5xl text-neon-cyan mb-4 text-glow"></i>
+                        <h4 class="font-scifi text-xl font-bold">Crie a sua agora</h4>
+                        <p class="text-sm text-gray-400 mt-2">Milhões de possibilidades.</p>
+                        <a href="https://pay.herospark.com/pixelandias-sua-fabrica-de-renders-3d-e-pixelarts-acesso-mensal-520338" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 text-neon-pink font-bold hover:text-white transition">Acessar App <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROVA SOCIAL / AUTORIDADE -->
+    <section class="py-20 bg-gradient-to-b from-transparent to-neon-purple/10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="font-scifi text-3xl font-bold mb-10 px-2">A Era da Criação Digital com IA Chegou</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-4 md:divide-x md:divide-white/10 max-w-3xl mx-auto">
+                <div class="px-4">
+                    <p class="text-4xl md:text-5xl font-black text-neon-cyan font-scifi mb-2">+30k</p>
+                    <p class="text-gray-400 font-bold uppercase tracking-wider text-sm">Artes Geradas</p>
+                </div>
+                <div class="px-4">
+                    <p class="text-4xl md:text-5xl font-black text-neon-purple font-scifi mb-2">100%</p>
+                    <p class="text-gray-400 font-bold uppercase tracking-wider text-sm">Na Nuvem</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL SECTION -->
+    <section class="py-24 relative overflow-hidden" id="cta">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1634838442385-236b2b4dbbc3?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/80 to-transparent"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+            <div class="glass p-8 md:p-16 rounded-3xl border border-neon-cyan/30 shadow-[0_0_50px_rgba(0,240,255,0.1)] relative overflow-hidden">
+                <!-- Efeito de brilho no card CTA -->
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-neon-cyan to-transparent"></div>
+                
+                <h2 class="font-scifi text-3xl md:text-6xl font-black mb-6">Pronto para dar vida às suas ideias?</h2>
+                <p class="text-lg md:text-2xl text-gray-300 mb-10">Pare de imaginar. Comece a criar. O acesso ao Pixelandias é fácil e prático!</p>
+                
+                <a href="https://pay.herospark.com/pixelandias-sua-fabrica-de-renders-3d-e-pixelarts-acesso-mensal-520338" target="_blank" rel="noopener noreferrer" class="inline-flex w-full sm:w-auto items-center justify-center btn-neon font-scifi font-bold py-4 md:py-5 px-6 md:px-12 rounded-full text-white text-lg md:text-xl tracking-widest shadow-2xl hover:scale-105 transition-transform duration-300 mb-6">
+                    ADQUIRIR APLICATIVO AGORA <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+                
+                <p class="text-sm text-gray-400"><i class="fa-solid fa-shield-halved text-green-400"></i> Disponível para Web, iOS e Android.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-10 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-cube text-neon-cyan text-xl"></i>
+                <span class="font-scifi font-bold text-xl text-white flex items-center gap-2">PIXELANDIAS</span>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-gray-400 text-sm">
+                <a href="#" id="open-termos" class="hover:text-neon-pink transition">Termos de Uso</a>
+                <a href="javascript:void(0)" class="hover:text-neon-pink transition">Privacidade</a>
+                <a href="javascript:void(0)" class="hover:text-neon-pink transition">Suporte</a>
+            </div>
+
+            <div class="flex gap-6 text-xl">
+                <a href="javascript:void(0)" class="text-gray-400 hover:text-white transition"><i class="fa-brands fa-discord"></i></a>
+                <a href="javascript:void(0)" class="text-gray-400 hover:text-white transition"><i class="fa-brands fa-twitter"></i></a>
+                <a href="javascript:void(0)" class="text-gray-400 hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="text-center text-gray-600 text-sm mt-8">
+            &copy; 2026 Pixelandias AI. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <!-- Modal Termos de Uso -->
+    <div id="termos-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass relative w-full max-w-4xl max-h-[90vh] md:max-h-[80vh] overflow-y-auto rounded-2xl border border-neon-cyan/30 p-5 md:p-8 shadow-[0_0_30px_rgba(0,240,255,0.1)] custom-scrollbar">
+            <button id="close-termos" class="absolute top-4 right-4 md:top-6 md:right-6 text-gray-400 hover:text-white transition cursor-pointer z-10 bg-bg-dark md:bg-transparent rounded-full w-8 h-8 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-2xl md:text-3xl"></i>
+            </button>
+            
+            <div class="text-gray-300 space-y-6 pr-2 md:pr-4 mt-6 md:mt-0">
+                <h2 class="font-scifi text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple mb-2">Termos e Condições de Uso – Pixelandias</h2>
+                <p class="text-sm text-neon-pink font-bold">Última atualização: 03 de Maio de 2026</p>
+                
+                <p>Bem-vindo(a) ao <strong>Pixelandias</strong>. Leia atentamente os termos e condições a seguir antes de utilizar nosso aplicativo e nossos serviços.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">1. Aceitação dos Termos e Elegibilidade</h3>
+                <p>Ao acessar, baixar ou utilizar o Pixelandias, você concorda expressamente com estes Termos de Uso, com nossa Política de Privacidade e com todas as leis e regulamentos aplicáveis. Caso não concorde com qualquer parte destes termos, você não deve utilizar o serviço.</p>
+                <p>Para utilizar o Pixelandias, você deve ter pelo menos 18 anos de idade, ou a idade de maioridade legal em sua jurisdição. Se for menor de idade, o uso só é permitido com o consentimento expresso e supervisão de um dos pais ou responsável legal.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">2. Sobre o Serviço</h3>
+                <p>O Pixelandias é uma plataforma inovadora que utiliza inteligência artificial (IA) para permitir que os usuários gerem imagens, cenas e personagens digitais (com foco em estilos como Render 3D, Anime, Pixel Art e RPG Fantasia) a partir de descrições em texto (prompts).</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">3. Diretrizes de Uso Aceitável</h3>
+                <p>Você é inteiramente responsável pelos textos (prompts) que insere e pelas imagens que gera. Ao utilizar o Pixelandias, <strong>você concorda em NÃO utilizar a plataforma para:</strong></p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li><strong>Conteúdo Ilícito ou Perigoso:</strong> Gerar imagens que promovam atividades ilegais, terrorismo, violência extrema ou automutilação.</li>
+                    <li><strong>Conteúdo Sensível ou Explícito:</strong> Criar material pornográfico, nudez não consensual, abuso infantil ou qualquer conteúdo de natureza sexualmente explícita.</li>
+                    <li><strong>Discurso de Ódio e Assédio:</strong> Gerar conteúdo que promova discriminação, ódio, difamação, bullying ou assédio contra indivíduos ou grupos com base em raça, religião, orientação sexual, gênero ou nacionalidade.</li>
+                    <li><strong>Desinformação e Deepfakes:</strong> Criar imagens enganosas de pessoas reais, eventos históricos ou notícias falsas com a intenção de fraudar, enganar ou prejudicar terceiros.</li>
+                    <li><strong>Violação de Direitos:</strong> Violar direitos autorais, marcas registradas ou o direito de imagem/privacidade de terceiros.</li>
+                    <li><strong>Abuso de Sistema:</strong> Tentar realizar engenharia reversa, hackear, sobrecarregar os servidores ou burlar as medidas de segurança do aplicativo.</li>
+                </ul>
+                <p class="text-neon-pink italic border-l-4 border-neon-pink pl-4 bg-neon-pink/10 py-2">O Pixelandias reserva-se o direito de banir imediatamente e sem aviso prévio qualquer usuário que viole estas diretrizes.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">4. Integração com Tecnologias de Terceiros</h3>
+                <p>Para realizar a "mágica" da geração de imagens, o Pixelandias atua como uma interface que processa solicitações e utiliza os serviços baseados em Inteligência Artificial fornecidos pelo <strong>Google Gemini</strong> (via API).</p>
+                <p>Desta forma, você compreende e concorda que:</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li>O motor principal de geração não é operado exclusivamente por nós.</li>
+                    <li>O serviço está sujeito às Políticas de Uso do Google Generative AI.</li>
+                    <li>Instabilidades, períodos de manutenção, lentidão, alterações de qualidade ou descontinuações nos serviços do Google podem impactar diretamente o funcionamento do Pixelandias, não sendo o Pixelandias responsável por tais interrupções.</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">5. Propriedade Intelectual e Direitos de Uso</h3>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li><strong>Seus Direitos:</strong> Você possui os direitos de uso comercial e não comercial das imagens que você gera através do Pixelandias, desde que geradas em conformidade com estes Termos.</li>
+                    <li><strong>Limitações da IA:</strong> Devido à natureza da inteligência artificial generativa, o Pixelandias não garante que as imagens geradas sejam absolutamente únicas, exclusivas ou livres de semelhanças com obras existentes ou geradas por outros usuários.</li>
+                    <li><strong>Nossa Licença:</strong> Ao utilizar o aplicativo, você nos concede uma licença não exclusiva para utilizar as imagens geradas por você (de forma anônima) exclusivamente para fins de melhoria do algoritmo, exibição na "Galeria da Comunidade" e marketing do próprio app, a menos que você opte por tornar suas criações privadas nas configurações.</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">6. Alterações e Disponibilidade do Serviço</h3>
+                <p>O Pixelandias está em constante evolução. Reservamo-nos o direito de:</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li>Modificar, adicionar ou remover funcionalidades e estilos visuais a qualquer momento.</li>
+                    <li>Implementar ou alterar planos de assinatura, limites de uso (créditos) e preços.</li>
+                    <li>Suspender temporariamente o aplicativo para manutenção ou atualizações.</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">7. Isenção de Garantias e Limitação de Responsabilidade</h3>
+                <p>O serviço é fornecido "no estado em que se encontra" (as is) e "conforme disponível". O Pixelandias não oferece garantias explícitas ou implícitas de que o serviço será ininterrupto, livre de erros ou que as imagens geradas atenderão perfeitamente às suas expectativas artísticas.</p>
+                <p>Em nenhuma circunstância o Pixelandias, seus criadores, diretores ou parceiros serão responsáveis por danos diretos, indiretos, incidentais ou lucros cessantes decorrentes do uso ou da incapacidade de uso do aplicativo, perda de dados, ou problemas legais enfrentados por você devido ao uso indevido das imagens geradas.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">8. Contato</h3>
+                <p>Se você tiver dúvidas, relatórios de bugs, preocupações com privacidade ou denúncias de mau uso, entre em contato com a nossa equipe:</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li><strong>E-mail:</strong> suporte@pixelandias.com</li>
+                    <li><strong>Website:</strong> www.pixelandias.com</li>
+                </ul>
+                <p class="mt-8 italic text-gray-500 border-t border-white/10 pt-4">Ao clicar em "Aceitar", criar uma conta ou gerar sua primeira imagem, você reconhece que leu, compreendeu e concorda em estar legalmente vinculado a estes Termos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script simples para gerar partículas/estrelas flutuantes no fundo -->
+    <script>
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height, particles;
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            
+            // Quantidade de partículas
+            for(let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 2 + 0.5,
+                    speedY: Math.random() * 0.5 + 0.1,
+                    opacity: Math.random() * 0.5 + 0.1,
+                    color: Math.random() > 0.5 ? '#FF007F' : '#00F0FF'
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.opacity;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Movimento para cima
+                p.y -= p.speedY;
+                
+                // Reseta a partícula se sair da tela
+                if(p.y < 0) {
+                    p.y = height;
+                    p.x = Math.random() * width;
+                }
+            });
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-bg-dark/95', 'shadow-lg', 'shadow-neon-purple/10');
+                nav.classList.remove('glass');
+            } else {
+                nav.classList.add('glass');
+                nav.classList.remove('bg-bg-dark/95', 'shadow-lg', 'shadow-neon-purple/10');
+            }
+        });
+
+        // Lógica do Menu Mobile
+        const btnMobileMenu = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        btnMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+            const icon = btnMobileMenu.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            }
+        });
+
+        // Fechar menu mobile ao clicar em um link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                const icon = btnMobileMenu.querySelector('i');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        window.addEventListener('resize', init);
+        
+        init();
+        animate();
+
+        // Lógica do Modal de Termos de Uso
+        const modalTermos = document.getElementById('termos-modal');
+        const btnOpenTermos = document.getElementById('open-termos');
+        const btnCloseTermos = document.getElementById('close-termos');
+
+        btnOpenTermos.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalTermos.classList.remove('hidden');
+            modalTermos.classList.add('flex');
+            // Pequeno delay para a transição de opacidade funcionar suavemente
+            setTimeout(() => {
+                modalTermos.classList.remove('opacity-0');
+            }, 10);
+        });
+
+        btnCloseTermos.addEventListener('click', () => {
+            modalTermos.classList.add('opacity-0');
+            setTimeout(() => {
+                modalTermos.classList.add('hidden');
+                modalTermos.classList.remove('flex');
+            }, 300); // tempo igual ao duration-300 do Tailwind
+        });
+
+        // Fechar modal clicando na parte escura fora dele
+        modalTermos.addEventListener('click', (e) => {
+            if (e.target === modalTermos) {
+                btnCloseTermos.click();
+            }
+        });
+    </script>
+</body>
+</html>
