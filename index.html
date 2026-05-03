@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIXELANDIAS | Ecossistema Cinematográfico Unificado</title>
+    <title>Pixelandias App</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -566,7 +566,7 @@
             <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-gray-400 text-sm">
                 <a href="#" id="open-termos" class="hover:text-neon-pink transition">Termos de Uso</a>
                 <a href="javascript:void(0)" class="hover:text-neon-pink transition">Privacidade</a>
-                <a href="javascript:void(0)" class="hover:text-neon-pink transition">Suporte</a>
+                <a href="#" id="open-suporte" class="hover:text-neon-pink transition">Suporte</a>
             </div>
 
             <div class="flex gap-6 text-xl">
@@ -646,6 +646,54 @@
                     <li><strong>Website:</strong> www.pixelandias.com</li>
                 </ul>
                 <p class="mt-8 italic text-gray-500 border-t border-white/10 pt-4">Ao clicar em "Aceitar", criar uma conta ou gerar sua primeira imagem, você reconhece que leu, compreendeu e concorda em estar legalmente vinculado a estes Termos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Suporte -->
+    <div id="suporte-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass relative w-full max-w-lg rounded-2xl border border-neon-cyan/30 p-8 shadow-[0_0_30px_rgba(0,240,255,0.1)] text-center">
+            <button id="close-suporte" class="absolute top-4 right-4 md:top-6 md:right-6 text-gray-400 hover:text-white transition cursor-pointer z-10 bg-bg-dark md:bg-transparent rounded-full w-8 h-8 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            
+            <div class="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-full flex items-center justify-center text-white text-3xl mx-auto mb-6 shadow-[0_0_15px_rgba(0,240,255,0.5)]">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+            
+            <h2 class="font-scifi text-2xl md:text-3xl font-bold text-white mb-2">Precisa de ajuda?</h2>
+            <p class="text-gray-400 mb-8">Nossa equipe está sempre pronta para ajudar. Escolha um canal abaixo para falar com a gente:</p>
+            
+            <div class="flex flex-col gap-4 text-left">
+                <a href="mailto:pixelandias.app@gmail.com" class="glass border border-white/10 hover:border-neon-cyan/50 p-4 rounded-xl flex items-center gap-4 transition-all hover:bg-white/5">
+                    <div class="w-10 h-10 rounded-full bg-neon-cyan/10 flex items-center justify-center text-neon-cyan shrink-0">
+                        <i class="fa-solid fa-envelope text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-white">E-mail</p>
+                        <p class="text-sm text-gray-400">pixelandias.app@gmail.com</p>
+                    </div>
+                </a>
+                
+                <a href="https://instagram.com/pixelandias" target="_blank" rel="noopener noreferrer" class="glass border border-white/10 hover:border-neon-pink/50 p-4 rounded-xl flex items-center gap-4 transition-all hover:bg-white/5">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 flex items-center justify-center text-white shrink-0">
+                        <i class="fa-brands fa-instagram text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-white">DM no Instagram</p>
+                        <p class="text-sm text-gray-400">@pixelandias</p>
+                    </div>
+                </a>
+                
+                <a href="https://discord.gg/4kb6tMPBs7" target="_blank" rel="noopener noreferrer" class="glass border border-white/10 hover:border-[#5865F2]/50 p-4 rounded-xl flex items-center gap-4 transition-all hover:bg-white/5">
+                    <div class="w-10 h-10 rounded-full bg-[#5865F2]/20 flex items-center justify-center text-[#5865F2] shrink-0">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-white">Comunidade Discord</p>
+                        <p class="text-sm text-gray-400">Tire dúvidas rapidamente</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -771,6 +819,34 @@
         modalTermos.addEventListener('click', (e) => {
             if (e.target === modalTermos) {
                 btnCloseTermos.click();
+            }
+        });
+
+        // Lógica do Modal de Suporte
+        const modalSuporte = document.getElementById('suporte-modal');
+        const btnOpenSuporte = document.getElementById('open-suporte');
+        const btnCloseSuporte = document.getElementById('close-suporte');
+
+        btnOpenSuporte.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalSuporte.classList.remove('hidden');
+            modalSuporte.classList.add('flex');
+            setTimeout(() => {
+                modalSuporte.classList.remove('opacity-0');
+            }, 10);
+        });
+
+        btnCloseSuporte.addEventListener('click', () => {
+            modalSuporte.classList.add('opacity-0');
+            setTimeout(() => {
+                modalSuporte.classList.add('hidden');
+                modalSuporte.classList.remove('flex');
+            }, 300);
+        });
+
+        modalSuporte.addEventListener('click', (e) => {
+            if (e.target === modalSuporte) {
+                btnCloseSuporte.click();
             }
         });
     </script>
