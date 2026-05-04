@@ -565,7 +565,8 @@
             
             <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-gray-400 text-sm">
                 <a href="#" id="open-termos" class="hover:text-neon-pink transition">Termos de Uso</a>
-                <a href="javascript:void(0)" class="hover:text-neon-pink transition">Privacidade</a>
+                <a href="#" id="open-reembolso" class="hover:text-neon-pink transition">Política de Reembolso</a>
+                <a href="#" id="open-privacidade" class="hover:text-neon-pink transition">Privacidade</a>
                 <a href="#" id="open-suporte" class="hover:text-neon-pink transition">Suporte</a>
             </div>
 
@@ -642,10 +643,102 @@
                 <h3 class="font-scifi text-xl font-bold text-white mt-8">8. Contato</h3>
                 <p>Se você tiver dúvidas, relatórios de bugs, preocupações com privacidade ou denúncias de mau uso, entre em contato com a nossa equipe:</p>
                 <ul class="list-disc pl-6 space-y-2 text-gray-400">
-                    <li><strong>E-mail:</strong> suporte@pixelandias.com</li>
-                    <li><strong>Website:</strong> www.pixelandias.com</li>
+                    <li><strong>E-mail:</strong> pixelandias.app@gmail.com</li>
+                    <li><strong>Website:</strong> www.pixelandias.net</li>
                 </ul>
                 <p class="mt-8 italic text-gray-500 border-t border-white/10 pt-4">Ao clicar em "Aceitar", criar uma conta ou gerar sua primeira imagem, você reconhece que leu, compreendeu e concorda em estar legalmente vinculado a estes Termos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reembolso -->
+    <div id="reembolso-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass relative w-full max-w-4xl max-h-[90vh] md:max-h-[80vh] overflow-y-auto rounded-2xl border border-neon-cyan/30 p-5 md:p-8 shadow-[0_0_30px_rgba(0,240,255,0.1)] custom-scrollbar">
+            <button id="close-reembolso" class="absolute top-4 right-4 md:top-6 md:right-6 text-gray-400 hover:text-white transition cursor-pointer z-10 bg-bg-dark md:bg-transparent rounded-full w-8 h-8 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-2xl md:text-3xl"></i>
+            </button>
+            
+            <div class="text-gray-300 space-y-6 pr-2 md:pr-4 mt-6 md:mt-0">
+                <h2 class="font-scifi text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple mb-2">Política de Reembolso</h2>
+                <p class="text-sm text-neon-pink font-bold">Última atualização: 03 de Maio de 2026</p>
+                
+                <p>A presente Política de Reembolso do <strong>Pixelandias</strong> foi elaborada em estrita conformidade com o Código de Defesa do Consumidor (Lei nº 8.078/90) da legislação brasileira.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">1. Direito de Arrependimento (Prazo de 7 dias)</h3>
+                <p>Conforme previsto no Artigo 49 do Código de Defesa do Consumidor, o usuário que realizar a assinatura ou compra de acesso ao Pixelandias fora de um estabelecimento físico (pela internet) possui o <strong>direito de arrependimento no prazo de até 7 (sete) dias corridos</strong>, contados a partir da data de liberação do acesso ao serviço.</p>
+                <p>Se você se arrepender da aquisição dentro deste período, garantimos o reembolso integral (100%) do valor pago, sem a necessidade de justificativa.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">2. Como Solicitar o Reembolso</h3>
+                <p>Para exercer seu direito de arrependimento e solicitar o reembolso, basta entrar em contato com nossa equipe de suporte através do e-mail: <strong>pixelandias.app@gmail.com</strong>.</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li>Informe o e-mail utilizado na compra e/ou os dados da sua conta.</li>
+                    <li>O pedido deve ser enviado dentro do prazo legal de 7 dias corridos após a compra.</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">3. Processamento e Prazos</h3>
+                <p>Após a solicitação formal, sua assinatura será cancelada imediatamente e o acesso ao serviço será interrompido.</p>
+                <p>O estorno será processado diretamente pela plataforma de pagamentos utilizada no momento da compra (HeroSpark). O prazo para que o valor retorne a você dependerá do método de pagamento escolhido:</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li><strong>Cartão de Crédito:</strong> O estorno poderá constar na fatura atual ou na subsequente, dependendo da data de fechamento da sua administradora de cartão.</li>
+                    <li><strong>PIX ou Boleto:</strong> O valor será devolvido diretamente na conta bancária informada (ou vinculada à compra), geralmente em até 72 horas úteis após a aprovação da nossa equipe financeira.</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">4. Pós-Prazo de 7 Dias</h3>
+                <p>Após o término do prazo legal de 7 dias, consideramos que o serviço foi testado e atendeu às suas necessidades ou expectativas. Portanto, <strong>não haverá reembolso para solicitações feitas fora deste período</strong>, independentemente do uso que você fez da plataforma ou dos créditos não consumidos.</p>
+                <p>Você poderá cancelar a renovação automática da sua assinatura a qualquer momento para evitar futuras cobranças. O cancelamento da renovação não gera reembolso de valores já pagos, mas garante que você mantenha o acesso até o fim do ciclo vigente.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Privacidade -->
+    <div id="privacidade-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass relative w-full max-w-4xl max-h-[90vh] md:max-h-[80vh] overflow-y-auto rounded-2xl border border-neon-cyan/30 p-5 md:p-8 shadow-[0_0_30px_rgba(0,240,255,0.1)] custom-scrollbar">
+            <button id="close-privacidade" class="absolute top-4 right-4 md:top-6 md:right-6 text-gray-400 hover:text-white transition cursor-pointer z-10 bg-bg-dark md:bg-transparent rounded-full w-8 h-8 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-2xl md:text-3xl"></i>
+            </button>
+            
+            <div class="text-gray-300 space-y-6 pr-2 md:pr-4 mt-6 md:mt-0">
+                <h2 class="font-scifi text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple mb-2">Política de Privacidade</h2>
+                <p class="text-sm text-neon-pink font-bold">Última atualização: 03 de Maio de 2026</p>
+                
+                <p>O <strong>Pixelandias</strong> valoriza a sua privacidade e está comprometido em proteger os seus dados pessoais. Esta política descreve como recolhemos, usamos e partilhamos as suas informações, em conformidade com as leis de proteção de dados.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">1. Informações que Recolhemos</h3>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li><strong>Dados de Conta:</strong> Ao registar-se, recolhemos o seu endereço de e-mail e informações básicas de perfil.</li>
+                    <li><strong>Dados de Uso e Criação:</strong> Guardamos os prompts de texto que insere, as configurações escolhidas e as imagens geradas pela IA para fornecer o histórico na sua conta.</li>
+                    <li><strong>Dados Financeiros:</strong> Não armazenamos os dados do seu cartão de crédito. Todo o processamento de pagamentos é feito de forma segura por parceiros externos especializados (HeroSpark).</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">2. Como Usamos as Suas Informações</h3>
+                <p>Utilizamos os seus dados para:</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li>Fornecer, operar e manter a plataforma Pixelandias.</li>
+                    <li>Processar os seus prompts através da API de Inteligência Artificial e entregar as imagens geradas.</li>
+                    <li>Melhorar os nossos algoritmos e treinar modelos internos (de forma anonimizada).</li>
+                    <li>Enviar comunicações sobre atualizações, suporte ou avisos importantes.</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">3. Partilha com Terceiros</h3>
+                <p>O Pixelandias não vende os seus dados pessoais. Partilhamos informações apenas com serviços essenciais para o funcionamento do app:</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li><strong>Google Gemini:</strong> Os seus prompts de texto são processados através das APIs de inteligência artificial para a geração de resultados.</li>
+                    <li><strong>HeroSpark:</strong> Para processar pagamentos de assinaturas, gerir o acesso aos planos e eventuais reembolsos.</li>
+                </ul>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">4. Armazenamento e Segurança</h3>
+                <p>Adotamos medidas de segurança técnicas e administrativas (como a encriptação SSL e servidores seguros na nuvem) para proteger os seus dados contra acessos não autorizados, perdas, destruição ou alterações.</p>
+
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">5. Os Seus Direitos</h3>
+                <p>Enquanto utilizador e titular dos dados, tem o direito de:</p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-400">
+                    <li>Confirmar a existência de tratamento de dados.</li>
+                    <li>Solicitar acesso, correção ou atualização das suas informações.</li>
+                    <li>Solicitar a eliminação dos seus dados pessoais e do histórico de imagens das nossas bases de dados.</li>
+                </ul>
+                
+                <h3 class="font-scifi text-xl font-bold text-white mt-8">6. Contacto</h3>
+                <p>Para exercer os seus direitos ou esclarecer dúvidas sobre esta Política de Privacidade, contacte-nos através do e-mail: <strong>pixelandias.app@gmail.com</strong>.</p>
             </div>
         </div>
     </div>
@@ -819,6 +912,62 @@
         modalTermos.addEventListener('click', (e) => {
             if (e.target === modalTermos) {
                 btnCloseTermos.click();
+            }
+        });
+
+        // Lógica do Modal de Reembolso
+        const modalReembolso = document.getElementById('reembolso-modal');
+        const btnOpenReembolso = document.getElementById('open-reembolso');
+        const btnCloseReembolso = document.getElementById('close-reembolso');
+
+        btnOpenReembolso.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalReembolso.classList.remove('hidden');
+            modalReembolso.classList.add('flex');
+            setTimeout(() => {
+                modalReembolso.classList.remove('opacity-0');
+            }, 10);
+        });
+
+        btnCloseReembolso.addEventListener('click', () => {
+            modalReembolso.classList.add('opacity-0');
+            setTimeout(() => {
+                modalReembolso.classList.add('hidden');
+                modalReembolso.classList.remove('flex');
+            }, 300);
+        });
+
+        modalReembolso.addEventListener('click', (e) => {
+            if (e.target === modalReembolso) {
+                btnCloseReembolso.click();
+            }
+        });
+
+        // Lógica do Modal de Privacidade
+        const modalPrivacidade = document.getElementById('privacidade-modal');
+        const btnOpenPrivacidade = document.getElementById('open-privacidade');
+        const btnClosePrivacidade = document.getElementById('close-privacidade');
+
+        btnOpenPrivacidade.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalPrivacidade.classList.remove('hidden');
+            modalPrivacidade.classList.add('flex');
+            setTimeout(() => {
+                modalPrivacidade.classList.remove('opacity-0');
+            }, 10);
+        });
+
+        btnClosePrivacidade.addEventListener('click', () => {
+            modalPrivacidade.classList.add('opacity-0');
+            setTimeout(() => {
+                modalPrivacidade.classList.add('hidden');
+                modalPrivacidade.classList.remove('flex');
+            }, 300);
+        });
+
+        modalPrivacidade.addEventListener('click', (e) => {
+            if (e.target === modalPrivacidade) {
+                btnClosePrivacidade.click();
             }
         });
 
